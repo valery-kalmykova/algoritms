@@ -1,4 +1,4 @@
-import React, {createRef, useState, FormEvent, useMemo} from "react";
+import React, {createRef, useState, FormEvent, useMemo, useEffect} from "react";
 import styles from "./stack.module.css"
 import {
   SolutionLayout,
@@ -21,14 +21,14 @@ export const StackPage: React.FC = () => {
   const inputRef = createRef<HTMLInputElement>();
   const [circlesData, setCirclesData] = useState<IcirclesData[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isDisabledAdd, setIsDisabledAdd] = useState<boolean>(false);
+  const [isDisabledRemove, setIsDisabledRemove] = useState<boolean>(false);
 
   const stack = useMemo(() => new Stack<IcirclesData>(),[]);
 
   const addEl = async (ref: HTMLInputElement, e: FormEvent) => {
     e.preventDefault();
     setInProgress(true);
-    setIsDisabled(true);
     if (ref) {      
       let item = {
         el: ref.value,
@@ -45,12 +45,10 @@ export const StackPage: React.FC = () => {
       ref.value = '';
     }
     setInProgress(false);
-    setIsDisabled(false);
   }
 
   const removeEl = async () => {
     setInProgress(true);
-    setIsDisabled(true);
     circlesData[circlesData.length-1].color = ElementStates.Changing;
     setCirclesData([...circlesData])
     await delay(DELAY_IN_MS)
@@ -59,13 +57,36 @@ export const StackPage: React.FC = () => {
     if(circlesData.length) circlesData[circlesData.length-1].head = 'head';
     setCirclesData([...circlesData])   
     setInProgress(false);
-    setIsDisabled(false);
   }
 
   const clear = () => {
     stack.reset();
     setCirclesData([])
   } 
+
+  const checkDisable = () => {
+    const length = inputRef.current!.value.length;
+      if (length > 4 || length === 0) {
+        setIsDisabledAdd(true)
+      } else {
+        setIsDisabledAdd(false)
+      }
+  }
+
+  useEffect(() => {
+    if (inputRef.current!.value === '') {
+      setIsDisabledAdd(true);
+      setIsDisabledRemove(true)
+    } else {
+      setIsDisabledAdd(false);
+      setIsDisabledRemove(false)
+    }
+    if (circlesData.length <= 0) {
+      setIsDisabledRemove(true);
+    } else {
+      setIsDisabledRemove(false)
+    }
+  }, [inputRef, circlesData])
 
   return (
     <SolutionLayout title="Стек">
@@ -74,10 +95,11 @@ export const StackPage: React.FC = () => {
           maxLength={4}
           type='text'
           isLimitText={true}
-          ref={inputRef} />
-        <Button text="Добавить" type='submit' isLoader={inProgress} disabled={isDisabled} />
-        <Button text="Удалить" type='button' onClick={()=>{removeEl()}} isLoader={inProgress} disabled={isDisabled} />
-        <Button text="Очистить" type='reset' onClick={()=>{clear()}} isLoader={inProgress} disabled={isDisabled} />
+          ref={inputRef}
+          onChange={checkDisable} />
+        <Button text="Добавить" type='submit' isLoader={inProgress} disabled={isDisabledAdd} />
+        <Button text="Удалить" type='button' onClick={()=>{removeEl()}} isLoader={inProgress} disabled={isDisabledRemove} />
+        <Button text="Очистить" type='reset' onClick={()=>{clear()}} isLoader={inProgress} disabled={isDisabledRemove} />
       </form>
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: IcirclesData, index: number)=>{

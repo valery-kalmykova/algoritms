@@ -6,12 +6,12 @@
   gap: 12px;
 }
 
-.inputContainer :nth-child(1) { 
-  width: 204px;
+.inputContainer input:nth-child(1) { 
+  width: 204px;  
 }
 
 .inputContainer button { 
-  width: 100%;
+  width: 100%;   
 }
 
 .circlesContainer {

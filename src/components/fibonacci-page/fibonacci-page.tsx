@@ -1,4 +1,4 @@
-import React, { createRef, useState, FormEvent } from "react";
+import React, { createRef, useState, FormEvent, useEffect } from "react";
 import styles from "./fibonacci.module.css"
 import {
   SolutionLayout,
@@ -37,15 +37,30 @@ export const FibonacciPage: React.FC = () => {
   const start = async (e: FormEvent) => {
     e.preventDefault();  
     setInProgress(true);
-    setIsDisabled(true);
     if (inputRef.current) {      
       const value = parseInt(inputRef.current.value);
       await delay(SHORT_DELAY_IN_MS)
       fib(value); 
     }
-    setInProgress(false);
-    setIsDisabled(false);    
-  } 
+    setInProgress(false);    
+  }
+
+  const checkDisable = () => {
+    const value = parseInt(inputRef.current!.value, 10)
+      if (value > 19 || inputRef.current!.value === '') {
+        setIsDisabled(true)
+      } else {
+        setIsDisabled(false)
+      }
+  }
+
+  useEffect(() => {
+    if (inputRef.current!.value === '') {
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(false)
+    }
+  }, [])
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
@@ -54,7 +69,8 @@ export const FibonacciPage: React.FC = () => {
           max={19}
           type='number'
           isLimitText={true}
-          ref={inputRef} />
+          ref={inputRef}
+          onChange={checkDisable} />
         <Button text="Рассчитать" type='submit' isLoader={inProgress} disabled={isDisabled} />          
       </form>            
       <div className={styles.circlesContainer}>        

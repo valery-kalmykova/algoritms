@@ -33,7 +33,7 @@ export const QueuePage: React.FC = () => {
   const inputRef = createRef<HTMLInputElement>();
   const [circlesData, setCirclesData] = useState<IcirclesData[]>(initialState);
   const [inProgress, setInProgress] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isDisabledRemove, setIsDisabledRemove] = useState<boolean>(false);
   const [isDisabledAdd, setIsDisabledAdd] = useState<boolean>(false);
   const capacityQueue = 7;
 
@@ -42,7 +42,6 @@ export const QueuePage: React.FC = () => {
   const addEl = async (ref: HTMLInputElement, e: FormEvent) => {
     e.preventDefault();
     setInProgress(true);
-    setIsDisabled(true);
     if(ref) {
       let item: IcirclesData = {
         el: ref.value,
@@ -54,7 +53,7 @@ export const QueuePage: React.FC = () => {
       if(queue.size() >= 1) {
         queue.last().tail = '';
       }
-      queue.enqueue(item);    
+      queue.enqueue(item);
     }
     circlesData[queue.size() - 1] = queue.last();
     setCirclesData([...circlesData]);
@@ -63,12 +62,10 @@ export const QueuePage: React.FC = () => {
     setCirclesData([...circlesData])      
     ref.value = '';  
     setInProgress(false);
-    setIsDisabled(false);    
   }
 
   const removeEl = async () => {
     setInProgress(true);
-    setIsDisabled(true);
     circlesData.map(el => el.head === 'head' ? el.color = ElementStates.Changing : null)    
     setCirclesData([...circlesData])
     await delay(DELAY_IN_MS)
@@ -84,7 +81,6 @@ export const QueuePage: React.FC = () => {
     setCirclesData([...circlesData])
     await delay(DELAY_IN_MS);  
     setInProgress(false);
-    setIsDisabled(false);
   }
 
   const clear = () => {
@@ -92,7 +88,7 @@ export const QueuePage: React.FC = () => {
     setCirclesData(initialState)
   }
 
-  const disableAdd = () => {
+  const checkDisable = () => {
     if (inputRef.current?.value === '') {
       setIsDisabledAdd(true)
     } else {
@@ -101,8 +97,13 @@ export const QueuePage: React.FC = () => {
   }
 
   useEffect(() => {
-    disableAdd() 
-  }, [inputRef])
+    if (queue.size() <= 0) {
+      setIsDisabledRemove(true)
+    } else {
+      setIsDisabledRemove(false)
+    }
+    checkDisable();
+  }, [circlesData])
  
   return (
     <SolutionLayout title="Очередь">
@@ -112,10 +113,10 @@ export const QueuePage: React.FC = () => {
           type='text'
           isLimitText={true}
           ref={inputRef}
-          onChange={disableAdd} />
+          onChange={checkDisable} />
         <Button text="Добавить" type='submit' isLoader={inProgress} disabled={isDisabledAdd}/>
-        <Button text="Удалить" type='button' onClick={() => {removeEl()}} isLoader={inProgress} disabled={isDisabled}/>
-        <Button text="Очистить" type='reset' onClick={()=>{clear()}} />          
+        <Button text="Удалить" type='button' onClick={() => {removeEl()}} isLoader={inProgress} disabled={isDisabledRemove}/>
+        <Button text="Очистить" type='reset' onClick={()=>{clear()}} disabled={isDisabledRemove} />          
       </form>            
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: IcirclesData, index: number)=>{

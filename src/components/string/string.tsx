@@ -1,4 +1,4 @@
-import React, { createRef, useState, FormEvent } from "react";
+import React, { createRef, useState, FormEvent, useEffect } from "react";
 import styles from "./string.module.css"
 import {
   SolutionLayout,
@@ -50,7 +50,6 @@ export const StringComponent: React.FC = () => {
   const start = async (e: FormEvent) => {
     e.preventDefault();
     setInProgress(true);
-    setIsDisabled(true);
     if (inputRef.current) {
       const strToArr = Array.from(inputRef.current.value);         
       const arr = strToArr.map(el => {
@@ -60,16 +59,25 @@ export const StringComponent: React.FC = () => {
       setCirclesData(arr);
       await delay(DELAY_IN_MS);
       await compare(arr);
-      setInProgress(false);
-      setIsDisabled(false);      
+      setInProgress(false);      
     }       
   }
+  const checkDisable = () => {
+    const length = inputRef.current!.value.length
+      if (length > 11 || length === 0) {
+        setIsDisabled(true)
+      } else {
+        setIsDisabled(false)
+      }
+  }
 
-  // useEffect(() => {
-  //   if (!isDisabled && inputRef.current) {
-  //     inputRef.current.value = ''
-  //   }
-  // }, [isDisabled, inputRef])
+  useEffect(() => {
+    if (inputRef.current!.value === '') {
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(false)
+    }
+  }, [])
 
     
   return (
@@ -79,7 +87,8 @@ export const StringComponent: React.FC = () => {
           maxLength={11}
           type='text'
           isLimitText={true}
-          ref={inputRef} />
+          ref={inputRef}
+          onChange={checkDisable} />
         <Button text="Развернуть" type='submit' isLoader={inProgress} disabled={isDisabled} />
       </form>            
       <div className={styles.circlesContainer}>
