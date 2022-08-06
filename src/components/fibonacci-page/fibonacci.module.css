@@ -1,0 +1,15 @@
+.inputContainer {
+  max-width: 522px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;  
+}
+
+.circlesContainer {
+  margin: 48px auto 0;
+  max-width: fit-content;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
