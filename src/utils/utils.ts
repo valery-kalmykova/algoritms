@@ -1,3 +1,4 @@
+import React from "react";
 import { IcirclesData, IcolumnsData } from '../types/types';
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));

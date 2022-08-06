@@ -1,11 +1,16 @@
 import { ElementStates } from "./element-states";
 
-export interface IcirclesData {
+interface IcirclesData {
   el: string, 
   color: ElementStates,
 };
 
-export interface IcolumnsData {
+interface IcolumnsData {
   el: number, 
   color: ElementStates,
 };
+
+export type {
+  IcirclesData,
+  IcolumnsData, 
+}
