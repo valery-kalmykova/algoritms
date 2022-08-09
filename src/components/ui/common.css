@@ -20,9 +20,9 @@
   --bg-button-active: #1fa7ff;
   --bg-button-disabled: #e0e0e0;
 
-  --default-color: #0032ff;
-  --changing-color: #d252e1;
-  --modified-color: #7fe051;
+  --default-color: #0032ff; /*rgb(0, 50, 255)*/
+  --changing-color: #d252e1; /*rgb(210, 82, 225)*/
+  --modified-color: #7fe051; /*rgb(127, 224, 81)*/
 
   --common-transition: all 0.3s ease-in;
 }

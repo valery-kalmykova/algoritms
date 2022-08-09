@@ -9,43 +9,14 @@ import {
 import { ElementStates } from "../../types/element-states";
 import { IcirclesData } from '../../types/types';
 import { DELAY_IN_MS } from '../../constants/delays';
-import { delay, swap } from '../../utils/utils';
+import { delay } from '../../utils/utils';
+import { compare } from './utils'
 
 export const StringComponent: React.FC = () => {  
   const inputRef = createRef<HTMLInputElement>();
   const [circlesData, setCirclesData] = useState<IcirclesData[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
-  const compare = async (a: IcirclesData[]) => {    
-    let start = 0;
-    let end = a.length-1;
-    if (start >= end) return;
-    await compareValues()
-    async function compareValues() {
-      if (start < end) {
-        if (a[start].el < a[end].el) {
-          a[start].color = ElementStates.Changing;
-          a[end].color = ElementStates.Changing;
-          setCirclesData([...a]);
-          await delay(DELAY_IN_MS);
-          swap(a, start, end);
-          a[start].color = ElementStates.Modified;
-          a[end].color = ElementStates.Modified;
-          setCirclesData([...a]);          
-          await delay(DELAY_IN_MS);          
-          start++;
-          end--;
-        } else {
-          start++;
-          end--;
-        }
-        await compareValues() 
-      } else {
-        return;
-      }         
-    }      
-  }
 
   const start = async (e: FormEvent) => {
     e.preventDefault();
@@ -58,10 +29,11 @@ export const StringComponent: React.FC = () => {
       }) ;     
       setCirclesData(arr);
       await delay(DELAY_IN_MS);
-      await compare(arr);
-      setInProgress(false);      
+      await compare(arr, setCirclesData);
+      setInProgress(false);
     }       
   }
+
   const checkDisable = () => {
     const length = inputRef.current!.value.length
       if (length > 11 || length === 0) {
@@ -89,7 +61,7 @@ export const StringComponent: React.FC = () => {
           isLimitText={true}
           ref={inputRef}
           onChange={checkDisable} />
-        <Button text="Развернуть" type='submit' isLoader={inProgress} disabled={isDisabled} />
+        <Button text="Развернуть" type='submit' isLoader={inProgress} disabled={isDisabled} name='add' />
       </form>            
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: IcirclesData, index: number)=>{

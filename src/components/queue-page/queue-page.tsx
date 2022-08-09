@@ -114,9 +114,12 @@ export const QueuePage: React.FC = () => {
           isLimitText={true}
           ref={inputRef}
           onChange={checkDisable} />
-        <Button text="Добавить" type='submit' isLoader={inProgress} disabled={isDisabledAdd}/>
-        <Button text="Удалить" type='button' onClick={() => {removeEl()}} isLoader={inProgress} disabled={isDisabledRemove}/>
-        <Button text="Очистить" type='reset' onClick={()=>{clear()}} disabled={isDisabledRemove} />          
+        <Button text="Добавить" type='submit' name='add'
+          isLoader={inProgress} disabled={isDisabledAdd}/>
+        <Button text="Удалить" type='button' name='delete'
+          onClick={() => {removeEl()}} isLoader={inProgress} disabled={isDisabledRemove}/>
+        <Button text="Очистить" type='reset' name='clear'
+          onClick={()=>{clear()}} disabled={isDisabledRemove} />          
       </form>            
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: IcirclesData, index: number)=>{
