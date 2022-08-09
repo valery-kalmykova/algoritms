@@ -61,7 +61,7 @@ export const StringComponent: React.FC = () => {
           isLimitText={true}
           ref={inputRef}
           onChange={checkDisable} />
-        <Button text="Развернуть" type='submit' isLoader={inProgress} disabled={isDisabled} />
+        <Button text="Развернуть" type='submit' isLoader={inProgress} disabled={isDisabled} name='add' />
       </form>            
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: IcirclesData, index: number)=>{

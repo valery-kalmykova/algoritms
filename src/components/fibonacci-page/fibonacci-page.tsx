@@ -71,7 +71,8 @@ export const FibonacciPage: React.FC = () => {
           isLimitText={true}
           ref={inputRef}
           onChange={checkDisable} />
-        <Button text="Рассчитать" type='submit' isLoader={inProgress} disabled={isDisabled} />          
+        <Button text="Рассчитать" type='submit' isLoader={inProgress} disabled={isDisabled}
+        name='calculate' />          
       </form>            
       <div className={styles.circlesContainer}>        
         {circlesData && circlesData.map((item: number, index: number)=>{

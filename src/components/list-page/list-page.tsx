@@ -273,14 +273,18 @@ export const ListPage: React.FC = () => {
           onChange={disableAdd} />
         <Button text="Добавить в head" 
           onClick={()=>{if (inputRef.current) addFirst(inputRef.current)}}
-          type='button' isLoader={inProgress} disabled={isDisabledAdd} />
+          type='button' isLoader={inProgress} disabled={isDisabledAdd}
+          name='add to head' />
         <Button text="Добавить в tail"
           onClick={()=>{if (inputRef.current) addLast(inputRef.current)}}
-          type='button' isLoader={inProgress} disabled={isDisabledAdd} />
+          type='button' isLoader={inProgress} disabled={isDisabledAdd}
+          name='add to tail' />
         <Button text="Удалить из head" onClick={()=>removeFirst()}
-          disabled={isDisabledRemove} isLoader={inProgress} />
+          disabled={isDisabledRemove} isLoader={inProgress}
+          name='delete from head' />
         <Button text="Удалить из tail" onClick={()=>removeLast()}
-          disabled={isDisabledRemove} isLoader={inProgress} />         
+          disabled={isDisabledRemove} isLoader={inProgress}
+          name='delete from tail' />         
       </div>
       <div className={styles.inputContainer} style={{ marginTop: "12px" }}>
         <Input
@@ -289,10 +293,12 @@ export const ListPage: React.FC = () => {
           onChange={disablebyIndex} />
         <Button text="Добавить по индексу"
           onClick={()=>{if (inputRef.current && inputIndexRef.current) add(inputRef.current, inputIndexRef.current)}}
-          type='button' disabled={isDisabledAddByIndex} isLoader={inProgress} />
+          type='button' disabled={isDisabledAddByIndex} isLoader={inProgress}
+          name='add by index' />
         <Button text="Удалить по индексу"
           onClick={()=>{if (inputIndexRef.current) remove(inputIndexRef.current)}}
-          type='button' disabled={isDisabledRemoveByIndex} isLoader={inProgress} />                 
+          type='button' disabled={isDisabledRemoveByIndex} isLoader={inProgress}
+          name='delete by index' />                 
       </div>           
       <div className={styles.circlesContainer}>
         {circlesData && circlesData.map((item: INode<IcirclesData>, index: number)=>{
