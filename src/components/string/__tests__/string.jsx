@@ -14,18 +14,12 @@ const evenArrReverse = [
   {el: '1', color: ElementStates.Modified},
 ];
 const notEvenArr = [
-  {el: '1', color: ElementStates.Default},
-  {el: '2', color: ElementStates.Default},
-  {el: '3', color: ElementStates.Default},
-  {el: '4', color: ElementStates.Default},
+  ...evenArr,
   {el: '5', color: ElementStates.Default},
 ];
 const notEvenArrReverse = [
   {el: '5', color: ElementStates.Modified},
-  {el: '4', color: ElementStates.Modified},
-  {el: '3', color: ElementStates.Modified},
-  {el: '2', color: ElementStates.Modified},
-  {el: '1', color: ElementStates.Modified},
+  ...evenArrReverse
 ]
 
 describe('string algorithm test', () => {
