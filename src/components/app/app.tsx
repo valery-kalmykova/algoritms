@@ -18,6 +18,9 @@ function App() {
           <Route path="/" exact>
             <MainPage />
           </Route>
+          <Route path="/algoritms" exact>
+            <MainPage />
+          </Route>
           <Route path="/recursion">
             <StringComponent />
           </Route>
